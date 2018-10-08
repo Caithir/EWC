@@ -6,12 +6,23 @@ import torchvision.models as models
 def get_model_from_config(config):
     return models.__dict__[config.arch]()
 
+
+
+
 def get_filename_from_config(config,fisher=None):
     """ will handle fisher file name here"""
-    filename = "test_model"
+    filename = ''
+    relevant_params = {
+        'lr': config.lr,
+        'arc': config.arch,
+        'gc': config.grad_clip,
+        'cl': len(config.classes),
+    }
+    filename = "_".join([k+"-"+str(v) for k, v in relevant_params.items()])
+
     if fisher:
-        filename+="_FI"
-    return f"{filname}.pth"
+        filename += "_FI"
+    return f"{filename}.pth"
 
 
 class AverageMeter(object):
@@ -39,6 +50,7 @@ def adjust_learning_rate(optimizer, epoch):
     #     param_group['lr'] = lr
     pass
 
+
 def accuracy(output, target, topk=(1,)):
     """Computes the precision@k for the specified values of k"""
     with torch.no_grad():
@@ -54,3 +66,4 @@ def accuracy(output, target, topk=(1,)):
             correct_k = correct[:k].view(-1).float().sum(0, keepdim=True)
             res.append(correct_k.mul_(100.0 / batch_size))
         return res
+
