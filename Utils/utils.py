@@ -1,10 +1,12 @@
 
 import torch
-import torchvision.models as models
+# import torchvision.models as models
+from arch import resnet18
 
 
 def get_model_from_config(config):
-    return models.__dict__[config.arch]()
+    return resnet18()
+    # return models.__dict__[config.arch]()
 
 
 
