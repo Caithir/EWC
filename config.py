@@ -6,17 +6,17 @@ BASE_LOG_DIR = ['logs']
 BASE_DATA_DIR = ['data']
 BASE_MODEL_DIR = ['models']
 
-# BASE_MODEL_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'models']
-# BASE_LOG_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'logs']
-# BASE_DATA_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'data']
+# BASE_MODEL_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'models']
+# BASE_LOG_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'logs']
+# BASE_DATA_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'data']
 
 run_settings = {
     'print_freq': 100,
     # options are standard: no fisher stuff, fisher: only fisher stuff
     # 'experiments': ['standard', 'fisher'],
-    'experiments': ['standard'],
-    # 'experiments': ['fisher'],
-    'fisher_base_model': '',
+    # 'experiments': ['standard'],
+    'experiments': ['fisher'],
+    'fisher_base_model': 'lr-0.01_arc-resnet18_gc-5_cl-8.pth',
     'experiment_name': "testrunss"
 }
 
