@@ -135,6 +135,7 @@ class FisherPenalty(object):
 
     def __call__(self, output, target):
         loss = torch.zeros(1)
+        loss.to(config.gpu)
         for n, p in self.model.named_parameters():
             _loss = self.fisher_diag[n] * (p - self.star_params[n]) ** 2
             loss += _loss.sum()
