@@ -37,7 +37,7 @@ log_items = [
 ]
 
 
-hyperparams = {
+norm_hyperparams = {
         'lr': 1e-2,
         'start_epoch': 0,
         'epochs': 2,
@@ -46,12 +46,28 @@ hyperparams = {
         'arch': 'resnet18',
         'batch_size': 64,
         'classes': list(range(8)),
-        'grad_clip': 5
+        'grad_clip': 5,
+}
+
+
+
+fisher_hyperparams = {
+        'lr': 1e-4,
+        'start_epoch': 0,
+        'epochs': 2,
+        'momentum': .9,
+        'weight_decay': 0,
+        'arch': 'resnet18',
+        'batch_size': 64,
+        'classes': list(range(8)),
+        'grad_clip': 5,
+        'lam': 10e5,
 }
 
 
 params = {}
-params.update(hyperparams)
+# params.update(norm_hyperparams)
+params.update(fisher_hyperparams)
 params.update(system_settings)
 params.update(run_settings)
 

@@ -53,7 +53,7 @@ def fisher():
                                              batch_size=config.batch_size,
                                              shuffle=True)
 
-    criterion = LossWithFisher(criterion, model, fisher_diag, star_params)
+    criterion = LossWithFisher(criterion, model, fisher_diag, star_params, config.lam)
 
     for epoch in range(config.start_epoch, config.epochs):
 

@@ -120,8 +120,8 @@ def calc_fisher_diag(train_loader, model, criterion, optimizer):
 
 class LossWithFisher(object):
 
-    def __init__(self, criterion, model, fisher_diag, star_params):
-        self.losses = [criterion, FisherPenalty(model, fisher_diag, star_params)]
+    def __init__(self, criterion, model, fisher_diag, star_params, lam):
+        self.losses = [criterion, FisherPenalty(model, fisher_diag, star_params, lam=lam)]
 
     def __call__(self, output, target):
         loss_values = [loss(output, target) for loss in self.losses]
@@ -129,17 +129,18 @@ class LossWithFisher(object):
 
 class FisherPenalty(object):
 
-    def __init__(self, model, fisher_diag, star_params):
+    def __init__(self, model, fisher_diag, star_params, lam):
         self.model = model
         self.fisher_diag = fisher_diag
         self.star_params = star_params
+        self.lam = lam
 
     def __call__(self, output, target):
         loss = torch.zeros(1)
         loss = loss.to(config.gpu)
         for n, p in self.model.named_parameters():
             _loss = self.fisher_diag[n] * (p - self.star_params[n]) ** 2
-            loss += _loss.sum()
+            loss += _loss.sum()*self.lam
         return loss
 
 
