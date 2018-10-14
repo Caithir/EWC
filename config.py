@@ -13,9 +13,9 @@ BASE_DATA_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'data']
 run_settings = {
     'print_freq': 100,
     # options are standard: no fisher stuff, fisher: only fisher stuff
-    # 'experiments': ['standard', 'fisher'],
+    'experiments': ['standard', 'fisher'],
     # 'experiments': ['standard'],
-    'experiments': ['fisher'],
+    # 'experiments': ['fisher'],
     'fisher_base_model': 'lr-0.01_arc-resnet18_gc-5_cl-8.pth',
     'experiment_name': "testrunss"
 }
@@ -47,6 +47,7 @@ norm_hyperparams = {
         'batch_size': 64,
         'classes': list(range(8)),
         'grad_clip': 5,
+        'lam': 0,
 }
 
 
@@ -66,8 +67,8 @@ fisher_hyperparams = {
 
 
 params = {}
-# params.update(norm_hyperparams)
-params.update(fisher_hyperparams)
+params.update(norm_hyperparams)
+# params.update(fisher_hyperparams)
 params.update(system_settings)
 params.update(run_settings)
 
@@ -82,3 +83,11 @@ config = config_gen(**params)
 def restore_config_from_dict(config):
     return config_gen(**config)
 
+def swap_config():
+    params = {}
+    params.update(fisher_hyperparams)
+    params.update(system_settings)
+    params.update(run_settings)
+
+    global config
+    config = config_gen(**params)
