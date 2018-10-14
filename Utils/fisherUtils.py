@@ -21,7 +21,7 @@ def calc_fisher_utils(model=None, filename=None):
     if not model:
         if not filename:
             raise ValueError("Must have either filename or model for fisher calc")
-        checkpoint = torch.load('models/'+filename)
+        checkpoint = torch.load(config.models+filename)
         config_from_file = restore_config_from_dict(checkpoint["config"])
         # Already calculated all the static fisher data for the given config
         if os.path.isfile(get_filename_from_config(config_from_file, fisher=True)):
