@@ -26,6 +26,7 @@ def calc_fisher_utils(model=None, filename=None):
         # Already calculated all the static fisher data for the given config
         if os.path.isfile(config.fisher_base_model[:-4]+'_FI.pth'):
             print("Fisher stats found for the model")
+            checkpoint = torch.load(config.fisher_base_model[:-4]+'_FI.pth')
             model = get_model_from_config(config_from_file)
             model.load_state_dict(checkpoint['state_dict'])
             model.to(config.gpu)
