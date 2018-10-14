@@ -10,10 +10,9 @@ from Utils import get_filename_from_config
 class Logger(object):
 
     def __init__(self):
-        self.writer = SummaryWriter()
+        self.writer = SummaryWriter(config.logs)
         self.log_counters = Counter()
-        self.tag_prefix = os.path.join(config.logs,
-                                       config.experiment_name,
+        self.tag_prefix = os.path.join(config.experiment_name,
                                        get_filename_from_config(config)[:-5])
 
     def log(self, tag, value):
