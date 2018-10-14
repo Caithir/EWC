@@ -7,7 +7,7 @@ def main():
         all customization should occur in the config
     """
     experiments = {
-        "standard": standard,
+        # "standard": standard,
         "fisher": fisher,
     }
     for exp in run_settings['experiments']:

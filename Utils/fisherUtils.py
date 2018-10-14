@@ -60,12 +60,13 @@ def calc_fisher_utils(model=None, filename=None):
                                                batch_size=1, shuffle=True)
 
     fisher_diag = calc_fisher_diag(train_loader, model, criterion, optimizer)
-
+    print('diag calc done')
     fisher_checkpoint = {
         'state_dict': model.state_dict(),
         'FI': fisher_diag,
         "config": config._asdict()
         }
+    print(f"model saved to :{get_filename_from_config(config, fisher=True)}")
     torch.save(fisher_checkpoint, get_filename_from_config(config, fisher=True))
     star_params = {name: p.clone().zero_() for name, p in model.named_parameters()}
     return model, fisher_diag, star_params
