@@ -32,6 +32,7 @@ def fisher():
     full_train_dataset = datasets.MNIST(config.data, train=True, download=True,
                                         transform=data_transforms)
     transfer_classes = list(set(range(10)) - set(config.classes))
+    print(transfer_classes)
 
     train_dataset = ClassDataset(transfer_classes, ds=full_train_dataset,
                                  transform=data_transforms)
@@ -52,9 +53,10 @@ def fisher():
                                              batch_size=config.batch_size,
                                              shuffle=True)
 
+    criterion = LossWithFisher(criterion, model, fisher_diag, star_params)
+
     for epoch in range(config.start_epoch, config.epochs):
 
-        criterion = LossWithFisher(criterion, model, fisher_diag, star_params)
         # train for one epoch
         train(train_loader, model, criterion, optimizer, epoch)
 
