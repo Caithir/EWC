@@ -1,3 +1,5 @@
+import os
+
 import torch
 import torch.nn as nn
 import torch.nn.parallel
@@ -69,4 +71,4 @@ def fisher():
             "config": config._asdict(),
             'state_dict': model.state_dict(),
             'optimizer': optimizer.state_dict(),
-        }, get_filename_from_config(config) +"second")
+        }, os.path.join(config.models, get_filename_from_config(config)[:-4] +"second.pth"))

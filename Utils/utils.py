@@ -5,7 +5,7 @@ from arch import arches
 
 
 def get_model_from_config(config):
-    return arches[config](10)
+    return arches[config.arch](10)
 
 
 def get_filename_from_config(config,fisher=None):

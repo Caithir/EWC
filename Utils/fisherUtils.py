@@ -68,7 +68,7 @@ def calc_fisher_utils(model=None, filename=None):
         "config": config._asdict()
         }
     print(f"model saved to :{get_filename_from_config(config, fisher=True)}")
-    torch.save(fisher_checkpoint, get_filename_from_config(config, fisher=True))
+    torch.save(fisher_checkpoint, os.path.join(config.models, get_filename_from_config(config, fisher=True)))
     star_params = {name: p.clone().zero_() for name, p in model.named_parameters()}
     return model, fisher_diag, star_params
 
