@@ -16,6 +16,27 @@ model_urls = {
 }
 
 
+
+class singleMLP(nn.Module):
+
+    def __init__(self, input_size, hidden_size, num_classes):
+        super().__init__()
+        self.fc1 = nn.Linear(input_size, hidden_size)
+        self.relu = nn.ReLU()
+        self.fc2 = nn.Linear(hidden_size, num_classes)
+
+    def forward(self, x):
+        out = self.fc1(x)
+        out = self.relu(out)
+        out = self.fc2(out)
+        return out
+
+
+def MLP(num_classes):
+    return singleMLP(784, 50, num_classes)
+
+
+
 def conv3x3(in_planes, out_planes, stride=1):
     """3x3 convolution with padding"""
     return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride,
@@ -165,7 +186,7 @@ def resnet18(pretrained=False, **kwargs):
     return model
 
 
-def resnet34(pretrained=False, **kwargs):
+def resnet34(num_classes, pretrained=False, **kwargs):
     """Constructs a ResNet-34 model.
 
     Args:
@@ -211,3 +232,11 @@ def resnet152(pretrained=False, **kwargs):
     if pretrained:
         model.load_state_dict(model_zoo.load_url(model_urls['resnet152']))
     return model
+
+
+
+
+arches = {
+    'resnet18': resnet18,
+    'MLP': MLP
+}

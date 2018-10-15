@@ -1,14 +1,11 @@
 
 import torch
 # import torchvision.models as models
-from arch import resnet18
+from arch import arches
 
 
 def get_model_from_config(config):
-    return resnet18()
-    # return models.__dict__[config.arch]()
-
-
+    return arches[config](10)
 
 
 def get_filename_from_config(config,fisher=None):
