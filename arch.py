@@ -26,7 +26,7 @@ class singleMLP(nn.Module):
         self.fc2 = nn.Linear(hidden_size, num_classes)
 
     def forward(self, x):
-        x = x.reshape(x.size(0), x.size(1), -1)
+        x = x.reshape(x.size(0), -1)
         out = self.fc1(x)
         out = self.relu(out)
         out = self.fc2(out)
