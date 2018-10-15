@@ -8,7 +8,7 @@ def get_model_from_config(config):
     return arches[config.arch](10)
 
 
-def get_filename_from_config(config,fisher=None):
+def get_filename_from_config(config, fisher=None):
     """ will handle fisher file name here"""
     filename = ''
     relevant_params = {
