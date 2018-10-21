@@ -10,10 +10,11 @@ from Utils import get_filename_from_config
 class Logger(object):
 
     def __init__(self):
-        self.writer = SummaryWriter(config.logs)
+        self.writer = SummaryWriter(os.path.join(config.logs, config.experiment_name, get_filename_from_config(config)[:-5]))
         self.log_counters = Counter()
-        self.tag_prefix = os.path.join(config.experiment_name,
-                                       get_filename_from_config(config)[:-5])
+        self.tag_prefix = os.path.join("")
+        # self.tag_prefix = os.path.join(config.experiment_name,
+        #                                get_filename_from_config(config)[:-5])
 
     def log(self, tag, value):
         if type not in log_items:
