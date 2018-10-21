@@ -13,10 +13,10 @@ BASE_DATA_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'data']
 run_settings = {
     'print_freq': 20,
     # options are standard: no fisher stuff, fisher: only fisher stuff
-    'experiments': ['standard', 'fisher'],
+    # 'experiments': ['standard', 'fisher'],
     # 'experiments': ['standard'],
-    # 'experiments': ['fisher'],
-    'fisher_base_model': 'lr-0.01_arc-MLP_gc-5_cl-8.pth',
+    'experiments': ['fisher'],
+    'fisher_base_model': 'lr-0.001_arc-MLP_gc-5_cl-8.pth',
     'experiment_name': "testrunss"
 }
 
@@ -38,7 +38,7 @@ log_items = [
 
 
 norm_hyperparams = {
-        'lr': 1e-2,
+        'lr': 1e-4,
         'start_epoch': 0,
         'epochs': 2,
         'momentum': .9,
@@ -47,7 +47,7 @@ norm_hyperparams = {
         'batch_size': 64,
         'classes': list(range(8)),
         'grad_clip': 5,
-        'lam': 0,
+        'lam': 10000000000,
 }
 
 
@@ -58,7 +58,7 @@ fisher_hyperparams = {
         'epochs': 2,
         'momentum': .9,
         'weight_decay': 0,
-        'arch': 'resnet18',
+        'arch': 'MLP',
         'batch_size': 64,
         'classes': list(range(8)),
         'grad_clip': 5,

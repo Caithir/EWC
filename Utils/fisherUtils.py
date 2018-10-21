@@ -8,6 +8,7 @@ import torch.nn.parallel
 import torch.optim
 import torch.utils.data
 import torch.utils.data.distributed
+from torch.autograd import Variable as V
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 from tqdm import tqdm
@@ -24,9 +25,10 @@ def calc_fisher_utils(model=None, filename=None):
         checkpoint = torch.load(os.path.join(config.models,filename))
         config_from_file = restore_config_from_dict(checkpoint["config"])
         # Already calculated all the static fisher data for the given config
-        if os.path.isfile(config.fisher_base_model[:-4]+'_FI.pth'):
+        potential_path = os.path.join(config.models, config.fisher_base_model[:-4]+'_FI.pth')
+        if os.path.isfile(potential_path):
             print("Fisher stats found for the model")
-            checkpoint = torch.load(config.fisher_base_model[:-4]+'_FI.pth')
+            checkpoint = torch.load(potential_path)
             model = get_model_from_config(config_from_file)
             model.load_state_dict(checkpoint['state_dict'])
             model.to(config.gpu)
@@ -132,15 +134,18 @@ class FisherPenalty(object):
     def __init__(self, model, fisher_diag, star_params, lam):
         self.model = model
         self.fisher_diag = fisher_diag
+        for k in fisher_diag:
+            fisher_diag[k].requires_grad=False
+            fisher_diag[k] *= lam
         self.star_params = star_params
         self.lam = lam
 
     def __call__(self, output, target):
-        loss = torch.zeros(1)
+        loss = V(torch.zeros(1))
         loss = loss.to(config.gpu)
         for n, p in self.model.named_parameters():
             _loss = self.fisher_diag[n] * (p - self.star_params[n]) ** 2
-            loss += _loss.sum()*self.lam
+            loss.add_(_loss.sum())
         return loss
 
 
