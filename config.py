@@ -2,13 +2,13 @@ import os
 import torch
 from collections import namedtuple
 # 'D:', 'OneDrive - Duke University', 'research', 'EWC'
-BASE_LOG_DIR = ['logs']
-BASE_DATA_DIR = ['data']
-BASE_MODEL_DIR = ['models']
+#BASE_LOG_DIR = ['logs']
+#BASE_DATA_DIR = ['data']
+#BASE_MODEL_DIR = ['models']
 
-# BASE_MODEL_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'models']
-# BASE_LOG_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'logs']
-# BASE_DATA_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'data']
+BASE_MODEL_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'models']
+BASE_LOG_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'logs']
+BASE_DATA_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'data']
 
 run_settings = {
     'print_freq': 20,
