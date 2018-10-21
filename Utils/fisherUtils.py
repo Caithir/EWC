@@ -16,6 +16,7 @@ from tqdm import tqdm
 from Utils.dataset import ClassDataset
 from .utils import get_model_from_config, get_filename_from_config, AverageMeter
 from config import config, restore_config_from_dict
+from .logger import logger
 
 def calc_fisher_utils(model=None, filename=None):
 
@@ -107,6 +108,7 @@ def calc_fisher_diag(train_loader, model, criterion, optimizer):
             # Tracking the Expectation of the sum of parameters
             for name, parameter in model.named_parameters():
                 fisher_diag[name] += (parameter.pow(2) / number_of_samples)
+                logger.log_fisher_diag(fisher_diag[name].sum())
 
             # measure elapsed time
             batch_time.update(time.time() - end)
