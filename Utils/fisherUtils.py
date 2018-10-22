@@ -23,7 +23,7 @@ def calc_fisher_utils(model=None, filename=None):
     if not model:
         if not filename:
             raise ValueError("Must have either filename or model for fisher calc")
-        checkpoint = torch.load(os.path.join(config.models,filename))
+        checkpoint = torch.load(os.path.join(config.models, filename))
         config_from_file = restore_config_from_dict(checkpoint["config"])
         # Already calculated all the static fisher data for the given config
         potential_path = os.path.join(config.models, config.fisher_base_model[:-4]+'_FI.pth')
@@ -70,7 +70,7 @@ def calc_fisher_utils(model=None, filename=None):
         'FI': fisher_diag,
         "config": config._asdict()
         }
-    print(f"model saved to :{get_filename_from_config(config, fisher=True)}")
+    print(f"model saved to: {get_filename_from_config(config, fisher=True)}")
     torch.save(fisher_checkpoint, os.path.join(config.models, get_filename_from_config(config, fisher=True)))
     star_params = {name: p.clone().zero_() for name, p in model.named_parameters()}
     return model, fisher_diag, star_params
@@ -132,7 +132,8 @@ class LossWithFisher(object):
         loss_values = [loss(output, target) for loss in self.losses]
         logger.log_loss_componets(loss_values[0], "CE")
         logger.log_loss_componets(loss_values[1], "FI")
-        return reduce(lambda x, y: x+y, loss_values)
+
+        return loss_values[0].add_(loss_values[1].item())
 
 
 class FisherPenalty(object):
