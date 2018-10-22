@@ -129,6 +129,12 @@ class LossWithFisher(object):
         self.losses = [criterion, FisherPenalty(model, fisher_diag, star_params, lam=lam)]
         self.valida = valida
 
+    def set_validation(self):
+        self.valida = True
+
+    def set_train(self):
+        self.valida = False
+
     def __call__(self, output, target):
         loss_values = [loss(output, target) for loss in self.losses]
         tag = 'val' if self.valida else ''
