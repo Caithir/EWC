@@ -107,6 +107,7 @@ def calc_fisher_diag(train_loader, model, criterion, optimizer):
 
             # Tracking the Expectation of the sum of parameters
             for name, param in model.named_parameters():
+                print(f"Types param: {type(param.pow(2))}, samples: {type(number_of_samples)}, result: {type(param.pow(2) / number_of_samples)}")
                 fisher_diag[name] += param.pow(2) / number_of_samples
 
             # measure elapsed time
