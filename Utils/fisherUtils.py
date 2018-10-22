@@ -118,8 +118,8 @@ def calc_fisher_diag(train_loader, model, criterion, optimizer):
             #            batch_time=batch_time
             #     ))
     for name, param in model.named_parameters():
-        for p in param:
-            logger.log_fisher_diag(p)
+        for p in param.view(-1):
+            logger.log_fisher_diag(p.item())
     return fisher_diag
 
 
