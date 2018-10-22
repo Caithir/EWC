@@ -106,8 +106,8 @@ def calc_fisher_diag(train_loader, model, criterion, optimizer):
             loss.backward()
 
             # Tracking the Expectation of the sum of parameters
-            for name, parameter in model.named_parameters():
-                fisher_diag[name] += (parameter.pow(2) / number_of_samples)
+            for name, param in model.named_parameters():
+                fisher_diag[name] += param.pow(2) / number_of_samples
 
             # measure elapsed time
             batch_time.update(time.time() - end)
@@ -117,8 +117,8 @@ def calc_fisher_diag(train_loader, model, criterion, optimizer):
             #     print('Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'.format(
             #            batch_time=batch_time
             #     ))
-    for name, parameter in model.named_parameters():
-        for p in parameter:
+    for name, param in model.named_parameters():
+        for p in param:
             logger.log_fisher_diag(p)
     return fisher_diag
 
