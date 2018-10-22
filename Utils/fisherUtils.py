@@ -107,8 +107,8 @@ def calc_fisher_diag(train_loader, model, criterion, optimizer):
 
             # Tracking the Expectation of the sum of parameters
             for name, parameter in model.named_parameters():
+                fisher_diag[name].requires_grad = False
                 fisher_diag[name] += (parameter.pow(2) / number_of_samples)
-                logger.log_fisher_diag(fisher_diag[name].sum())
 
             # measure elapsed time
             batch_time.update(time.time() - end)
@@ -118,8 +118,10 @@ def calc_fisher_diag(train_loader, model, criterion, optimizer):
             #     print('Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'.format(
             #            batch_time=batch_time
             #     ))
+    for name, parameter in model.named_parameters():
+        for p in parameter:
+            logger.log_fisher_diag(p)
     return fisher_diag
-
 
 
 class LossWithFisher(object):
@@ -129,16 +131,16 @@ class LossWithFisher(object):
 
     def __call__(self, output, target):
         loss_values = [loss(output, target) for loss in self.losses]
+        logger.log_loss_componets(loss_values[0], "CE")
+        logger.log_loss_componets(loss_values[1], "FI")
         return reduce(lambda x, y: x+y, loss_values)
+
 
 class FisherPenalty(object):
 
     def __init__(self, model, fisher_diag, star_params, lam):
         self.model = model
         self.fisher_diag = fisher_diag
-        for k in fisher_diag:
-            fisher_diag[k].requires_grad=False
-            fisher_diag[k] *= lam
         self.star_params = star_params
         self.lam = lam
 
@@ -146,7 +148,7 @@ class FisherPenalty(object):
         loss = V(torch.zeros(1))
         loss = loss.to(config.gpu)
         for n, p in self.model.named_parameters():
-            _loss = self.fisher_diag[n] * (p - self.star_params[n]) ** 2
+            _loss = self.lam * self.fisher_diag[n] * (p - self.star_params[n]) ** 2
             loss.add_(_loss.sum())
         return loss
 
