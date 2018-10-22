@@ -58,10 +58,10 @@ def fisher():
     criterion = LossWithFisher(criterion, model, fisher_diag, star_params, config.lam)
 
     for epoch in range(config.start_epoch, config.epochs):
-
+        criterion.set_train()
         # train for one epoch
         train(train_loader, model, criterion, optimizer, epoch)
-
+        criterion.set_validation()
         # evaluate on validation set
         prec1 = validate(val_loader, model, criterion)
 

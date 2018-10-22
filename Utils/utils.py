@@ -10,14 +10,7 @@ def get_model_from_config(config):
 
 def get_filename_from_config(config, fisher=None):
     """ will handle fisher file name here"""
-    filename = ''
-    relevant_params = {
-        'lr': config.lr,
-        'arc': config.arch,
-        'gc': config.grad_clip,
-        'cl': len(config.classes),
-    }
-    filename = "_".join([k+"-"+str(v) for k, v in relevant_params.items()])
+    filename = "_".join([k+"-"+str(v) for k, v in config.relevant_params.items()])
 
     if fisher:
         filename += "_FI"
