@@ -59,5 +59,11 @@ class Logger(object):
 
     def log_fisher_diag(self, diag_val):
         self.writer.add_scalar("Fisher Diag", diag_val, self.log_counters["fisher_diag"])
+        self.log_counters['fisher_diag'] += 1
+
+    def log_loss_componets(self, val, name):
+        self.writer.add_scalar("loss/"+name, val, self.log_counters[name])
+        self.log_counters[name] += 1
+
 
 logger = Logger()
