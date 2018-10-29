@@ -45,11 +45,15 @@ class Logger(object):
         self.log_counters[train_acc_tag] += 1
         self.log_counters[train_loss_tag] += 1
 
-    def val_batch_log(self, accuracy, loss):
-
+    def val_batch_log(self, accuracy, loss, fisher=False):
         val_main_tag = str(os.path.join(self.tag_prefix, 'val'))
-        val_acc_tag = str(os.path.join(val_main_tag, 'accuracy'))
-        val_loss_tag = str(os.path.join(val_main_tag, 'loss'))
+        suffix_tag = ""
+        # For overlaying the validation on previous task with current task
+        if fisher:
+            val_main_tag = str(os.path.join(self.tag_prefix, 'train'))
+            suffix_tag = "fisher"
+        val_acc_tag = str(os.path.join(val_main_tag, 'accuracy', suffix_tag))
+        val_loss_tag = str(os.path.join(val_main_tag, 'loss', suffix_tag))
         self.writer.add_scalar(val_acc_tag, accuracy, self.log_counters[val_acc_tag])
         self.writer.add_scalar(val_loss_tag, loss, self.log_counters[val_loss_tag])
 
