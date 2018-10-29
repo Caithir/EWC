@@ -55,16 +55,16 @@ def fisher():
                                              shuffle=True)
 
     old_dataset = datasets.MNIST(config.data, train=False,
-                                      download=True,
-                                      transform=data_transforms)
+                                 download=True,
+                                 transform=data_transforms)
 
     old_train_dataset = ClassDataset(config.classes, train=False,
-                               ds=old_dataset,
-                               transform=data_transforms)
+                                     ds=old_dataset,
+                                     transform=data_transforms)
 
     old_train_loader = torch.utils.data.DataLoader(old_train_dataset,
-                                             batch_size=config.batch_size,
-                                             shuffle=True)
+                                                   batch_size=config.batch_size,
+                                                   shuffle=True)
 
     criterion = LossWithFisher(criterion, model, fisher_diag, star_params, config.lam)
 
