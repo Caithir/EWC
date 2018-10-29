@@ -57,7 +57,7 @@ def standard():
 
     for epoch in range(config.start_epoch, config.epochs):
 
-        train(train_loader, model, criterion, optimizer, epoch)
+        train((train_loader,), model, criterion, optimizer, epoch)
 
         # evaluate on validation set
         prec1 = validate(val_loader, model, criterion)
