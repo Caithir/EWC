@@ -175,7 +175,7 @@ class ResNet(nn.Module):
         return x
 
 
-def resnet18(pretrained=False, **kwargs):
+def resnet18(num_classes, pretrained=False, **kwargs):
     """Constructs a ResNet-18 model.
 
     Args:
