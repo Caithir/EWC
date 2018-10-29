@@ -70,10 +70,10 @@ def fisher():
 
     scheduled_actions = None
     for epoch in range(config.start_epoch, config.epochs):
-
+        criterion.set_train()
         # train for one epoch
         train((train_loader, old_train_loader), model, criterion, optimizer, epoch, scheduled_actions)
-
+        criterion.set_validation()
         # evaluate on validation set
         prec1 = validate(val_loader, model, criterion)
 
@@ -83,4 +83,4 @@ def fisher():
             "config": config._asdict(),
             'state_dict': model.state_dict(),
             'optimizer': optimizer.state_dict(),
-        }, os.path.join(config.models, get_filename_from_config(config, fisher=True)))
+        }, os.path.join(config.models, get_filename_from_config(config)[:-4] +"second.pth"))

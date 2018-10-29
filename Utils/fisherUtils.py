@@ -125,15 +125,23 @@ def calc_fisher_diag(train_loader, model, criterion, optimizer):
 
 class LossWithFisher(object):
 
-    def __init__(self, criterion, model, fisher_diag, star_params, lam):
+    def __init__(self, criterion, model, fisher_diag, star_params, lam, valida=False):
         self.losses = [criterion, FisherPenalty(model, fisher_diag, star_params, lam=lam)]
+        self.valida = valida
+
+    def set_validation(self):
+        self.valida = True
+
+    def set_train(self):
+        self.valida = False
 
     def __call__(self, output, target):
         loss_values = [loss(output, target) for loss in self.losses]
-        logger.log_loss_componets(loss_values[0], "CE")
-        logger.log_loss_componets(loss_values[1], "FI")
+        tag = 'val' if self.valida else ''
+        logger.log_loss_componets(loss_values[0], "CE"+tag)
+        logger.log_loss_componets(loss_values[1], "FI"+tag)
 
-        return loss_values[0].add_(loss_values[1].item())
+        return loss_values[0]+(loss_values[1].item())
 
 
 class FisherPenalty(object):
