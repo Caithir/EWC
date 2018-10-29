@@ -37,7 +37,7 @@ def calc_fisher_utils(model=None, filename=None):
             return model, fisher_diag, star_params
 
 
-        checkpoint = torch.load(os.path.join(config.models, filename))
+        checkpoint = torch.load(os.path.join(config.models, 'completed', filename))
 
         config_from_file = restore_config_from_dict(checkpoint["config"])
         model = get_model_from_config(config_from_file)
