@@ -141,23 +141,22 @@ class LossWithFisher(object):
         logger.log_loss_componets(loss_values[0], "CE"+tag)
         logger.log_loss_componets(loss_values[1], "FI"+tag)
 
-        return loss_values[0]+(loss_values[1].item())
+        return sum(loss_values)
 
 
-class FisherPenalty(object):
+class FisherPenalty(nn.Module):
 
     def __init__(self, model, fisher_diag, star_params, lam):
+        super(FisherPenalty, self).__init__()
         self.model = model
         self.fisher_diag = fisher_diag
         self.star_params = star_params
         self.lam = lam
 
-    def __call__(self, output, target):
-        loss = V(torch.zeros(1))
-        loss = loss.to(config.gpu)
+    def forward(self, output, target):
+        loss = []
         for n, p in self.model.named_parameters():
-            _loss = self.lam * self.fisher_diag[n] * (p - self.star_params[n]) ** 2
-            loss.add_(_loss.sum())
-        return loss
+            loss.append((self.lam * self.fisher_diag[n] * (p - self.star_params[n]) ** 2).sum())
+        return sum(loss)
 
 
