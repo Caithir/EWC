@@ -83,4 +83,11 @@ def fisher():
             "config": config._asdict(),
             'state_dict': model.state_dict(),
             'optimizer': optimizer.state_dict(),
-        }, os.path.join(config.models, get_filename_from_config(config)[:-4] +"second.pth"))
+        }, os.path.join(config.models, "checkpoint", get_filename_from_config(config)))
+
+    torch.save({
+        'epoch': epoch + 1,
+        "config": config._asdict(),
+        'state_dict': model.state_dict(),
+        'optimizer': optimizer.state_dict(),
+    }, os.path.join(config.models, "completed", get_filename_from_config(config)))

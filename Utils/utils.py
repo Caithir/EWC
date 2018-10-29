@@ -8,10 +8,12 @@ def get_model_from_config(config):
     return arches[config.arch](10)
 
 
-def get_filename_from_config(config, fisher=None):
+def get_filename_from_config(config, fisher=None, standard=None):
     """ will handle fisher file name here"""
     filename = "_".join([k+"-"+str(v) for k, v in config.relevant_params.items()])
 
+    if standard:
+        filename = f"{config.relevant_params['arc']_cl-{config.relevant_params['cl']}}"
     if fisher:
         filename += "_FI"
     return f"{filename}.pth"
