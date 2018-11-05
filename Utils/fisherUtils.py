@@ -33,7 +33,9 @@ def calc_fisher_utils(model=None, filename=None):
             model.load_state_dict(checkpoint['state_dict'])
             model.to(config.gpu)
             fisher_diag = checkpoint['FI']
-            star_params = {name: p.clone() for name, p in model.named_parameters()}
+            star_params = {name: p.clone().detach() for name, p in model.named_parameters()}
+            for n, p in fisher_diag.items():
+                fisher_diag[n] = p.detach()
             return model, fisher_diag, star_params
 
 
@@ -69,10 +71,15 @@ def calc_fisher_utils(model=None, filename=None):
     fisher_diag = calc_fisher_diag(train_loader, model, criterion, optimizer)
     print('diag calc done')
     checkpoint["FI"] = fisher_diag
-    print(f"model saved to: {filename}")
+    print(f"model saved to: {filename[:-4]+'_FI.pth'}")
 
     torch.save(checkpoint, os.path.join(config.models, "completed", filename[:-4]+"_FI.pth"))
-    star_params = {name: p.clone().zero_() for name, p in model.named_parameters()}
+    star_params = {name: p.detach().zero_() for name, p in model.named_parameters()}
+    model = get_model_from_config(config_from_file)
+    model.load_state_dict(checkpoint['state_dict'])
+    model.to(config.gpu)
+    for n, p in fisher_diag.items():
+        fisher_diag[n] = p.detach()
     return model, fisher_diag, star_params
 
 
@@ -128,6 +135,8 @@ class LossWithFisher(object):
     def __init__(self, criterion, model, fisher_diag, star_params, lam, valida=False):
         self.losses = [criterion, FisherPenalty(model, fisher_diag, star_params, lam=lam)]
         self.valida = valida
+        self.old_task = False
+        self.count = 0
 
     def set_validation(self):
         self.valida = True
@@ -135,11 +144,22 @@ class LossWithFisher(object):
     def set_train(self):
         self.valida = False
 
-    def __call__(self, output, target):
-        loss_values = [loss(output, target) for loss in self.losses]
-        tag = 'val' if self.valida else ''
-        logger.log_loss_componets(loss_values[0], "CE"+tag)
-        logger.log_loss_componets(loss_values[1], "FI"+tag)
+    def swap_task(self):
+        self.old_task = not self.old_task
+
+    def __call__(self, output, target, model=None):
+        # loss_values = [loss(output, target) for loss in self.losses]
+        loss_values = [self.losses[0](output, target), self.losses[1](output, model)]
+        # return loss_values
+        # if self.count > 1000:
+        #     return loss_values[1]
+        # else:
+        #     self.count += 1
+        #     return loss_values[0]
+        if not self.old_task:
+            tag = 'val' if self.valida else ''
+            logger.log_loss_componets(loss_values[0], "CE"+tag)
+            logger.log_loss_componets(loss_values[1], "FI"+tag)
 
         return sum(loss_values)
 
@@ -153,10 +173,11 @@ class FisherPenalty(nn.Module):
         self.star_params = star_params
         self.lam = lam
 
-    def forward(self, output, target):
-        loss = []
-        for n, p in self.model.named_parameters():
-            loss.append((self.lam * self.fisher_diag[n] * (p - self.star_params[n]) ** 2).sum())
-        return sum(loss)
+    def forward(self, output, model):
+        loss = 0
+        for n, p in model.named_parameters():
+            _loss = self.lam * self.fisher_diag[n] * (p - self.star_params[n])**2
+            loss += _loss.sum()
+        return loss
 
 
