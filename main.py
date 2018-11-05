@@ -12,7 +12,6 @@ def main():
     }
     for exp in run_settings['experiments']:
         experiments[exp]()
-        # swap_config()
 
 
 

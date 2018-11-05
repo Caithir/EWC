@@ -69,6 +69,7 @@ def standard():
             'optimizer': optimizer.state_dict(),
         }, os.path.join(config.models, 'checkpoint', get_filename_from_config(config)))
 
+    print(f"saving completed to: {os.path.join(config.models, 'completed', get_filename_from_config(config, standard=True))}")
     torch.save({
         "config": config._asdict(),
         'state_dict': model.state_dict(),
