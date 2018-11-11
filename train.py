@@ -29,8 +29,8 @@ def train(train_loaders, model, criterion, optimizer, epoch, scheduled_actions=N
             # compute output
             output = model(input)
             loss = criterion(output, target, model)
-            # fl = loss[1]
-            # loss = loss[0]
+            fl = loss[1]
+            loss = loss[0]
             criterion.swap_task()
 
             # measure accuracy and record loss
@@ -48,10 +48,10 @@ def train(train_loaders, model, criterion, optimizer, epoch, scheduled_actions=N
             clip_grad_value_(model.parameters(), config.grad_clip)
             optimizer.step()
 
-            # optimizer.zero_grad()
-            # fl.backward()
-            # clip_grad_value_(model.parameters(), 5)
-            # optimizer.step()
+            optimizer.zero_grad()
+            fl.backward()
+            clip_grad_value_(model.parameters(), 5)
+            optimizer.step()
 
             # measure elapsed time
             batch_time.update(time.time() - end)
@@ -88,7 +88,7 @@ def validate(val_loader, model, criterion):
 
             # compute output
             output = model(input)
-            loss = criterion(output, target, model)
+            loss = criterion(output, target, model)[0]
 
             # measure accuracy and record loss
             prec1, prec5 = accuracy(output, target, topk=(1, 5))
