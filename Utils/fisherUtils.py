@@ -150,7 +150,7 @@ class LossWithFisher(object):
     def __call__(self, output, target, model=None):
         # loss_values = [loss(output, target) for loss in self.losses]
         loss_values = [self.losses[0](output, target), self.losses[1](output, model)]
-        # return loss_values
+        return loss_values
         # if self.count > 1000:
         #     return loss_values[1]
         # else:
