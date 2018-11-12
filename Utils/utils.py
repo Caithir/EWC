@@ -1,6 +1,9 @@
+import numpy as np
 
 import torch
 # import torchvision.models as models
+from scipy import stats
+
 from arch import arches
 
 
@@ -18,6 +21,11 @@ def get_filename_from_config(config, fisher=None, standard=None):
         filename += "_FI"
     return f"{filename}.pth"
 
+def calc_avg_entropy_from_tensor(tensor):
+    tensor = tensor.detach().cpu()
+    # output is not in [0,1] so must logsoftmax
+    m = torch.nn.LogSoftmax(0)
+    return np.average([stats.entropy(m(x)) for x in tensor])
 
 class AverageMeter(object):
     """Computes and stores the average and current value"""

@@ -41,7 +41,7 @@ def train(train_loaders, model, criterion, optimizer, epoch, scheduled_actions=N
             losses.update(loss.item(), input.size(0))
             top1.update(prec1[0], input.size(0))
             top5.update(prec5[0], input.size(0))
-
+            logger.log_entropy(output)
             # compute gradient and do SGD step
             optimizer.zero_grad()
             loss.backward(retain_graph=True)

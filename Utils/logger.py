@@ -4,7 +4,7 @@ from collections import Counter
 import torch
 from tensorboardX import SummaryWriter
 from config import config, log_items
-from Utils import get_filename_from_config
+from Utils import get_filename_from_config, calc_avg_entropy_from_tensor
 
 
 class Logger(object):
@@ -67,6 +67,13 @@ class Logger(object):
     def log_loss_componets(self, val, name):
         self.writer.add_scalar("loss/"+name, val, self.log_counters[name])
         self.log_counters[name] += 1
+
+
+    def log_entropy(self, output):
+        avg_ent = calc_avg_entropy_from_tensor(output)
+        tag = "entropy"
+        self.writer.add_scalar(tag, avg_ent, self.log_counters[tag])
+        self.log_counters[tag] += 1
 
 
 logger = Logger()
