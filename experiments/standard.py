@@ -32,9 +32,16 @@ def standard():
                              (0.3081,))
     ])
 
-    full_train_dataset = datasets.MNIST(config.data, train=True,
-                                        download=True,
-                                        transform=data_transforms)
+    kwargs = {
+        'root': config.data,
+        'train': True,
+        'download': True,
+        'transform': data_transforms
+    }
+    if config.dataset == datasets.EMNIST:
+        kwargs['split'] = config.EMNIST_split
+
+    full_train_dataset = config.dataset(**kwargs)
 
     train_dataset = ClassDataset(config.classes, ds=full_train_dataset,
                                  transform=data_transforms)
@@ -43,9 +50,7 @@ def standard():
                                                batch_size=config.batch_size,
                                                shuffle=True)
 
-    full_val_dataset = datasets.MNIST(config.data, train=False,
-                                      download=True,
-                                      transform=data_transforms)
+    full_val_dataset = datasets.config.dataset(**kwargs)
 
     val_dataset = ClassDataset(config.classes, train=False,
                                ds=full_val_dataset,

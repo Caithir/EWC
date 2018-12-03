@@ -30,9 +30,16 @@ def fisher():
         transforms.Normalize((0.1307,),
                              (0.3081,))
     ])
+    kwargs = {
+        'root': config.data,
+        'train': True,
+        'download': True,
+        'transform': data_transforms
+    }
+    if config.dataset == datasets.EMNIST:
+        kwargs['split'] = config.EMNIST_split
 
-    full_train_dataset = datasets.MNIST(config.data, train=True, download=True,
-                                        transform=data_transforms)
+    full_train_dataset = config.dataset(**kwargs)
     transfer_classes = list(set(range(10)) - set(config.classes))
 
     train_dataset = ClassDataset(transfer_classes, ds=full_train_dataset,
@@ -42,9 +49,7 @@ def fisher():
                                                batch_size=config.batch_size,
                                                shuffle=True)
 
-    full_val_dataset = datasets.MNIST(config.data, train=False,
-                                      download=True,
-                                      transform=data_transforms)
+    full_val_dataset = config.dataset(**kwargs)
 
     val_dataset = ClassDataset(transfer_classes, train=False,
                                ds=full_val_dataset,
@@ -54,9 +59,7 @@ def fisher():
                                              batch_size=config.batch_size,
                                              shuffle=True)
 
-    old_dataset = datasets.MNIST(config.data, train=False,
-                                 download=True,
-                                 transform=data_transforms)
+    old_dataset = config.dataset(**kwargs)
 
     old_train_dataset = ClassDataset(config.classes, train=False,
                                      ds=old_dataset,

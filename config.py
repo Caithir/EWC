@@ -1,5 +1,6 @@
 import os
 import torch
+import torchvision.datasets as datasets
 from collections import namedtuple
 # 'D:', 'OneDrive - Duke University', 'research', 'EWC'
 #BASE_LOG_DIR = ['logs']
@@ -17,7 +18,12 @@ run_settings = {
     #'experiments': ['standard'],
     'experiments': ['fisher'],
     'fisher_base_model': 'MLP3_cl-8.pth',
-    'experiment_name': "steps"
+    'experiment_name': "steps",
+    # 'dataset': datasets.MNIST,
+    # 'dataset': datasets.EMNIST,
+    'dataset': datasets.FashionMNIST,
+    'EMNIST_split': 'Digits',
+
 }
 
 system_settings = {
@@ -51,21 +57,6 @@ norm_hyperparams = {
 }
 
 
-
-fisher_hyperparams = {
-        'lr': 1e-3,
-        'start_epoch': 0,
-        'epochs': 2,
-        'momentum': .9,
-        'weight_decay': 0,
-        'arch': 'MLP',
-        'batch_size': 64,
-        'classes': list(range(8)),
-        'grad_clip': 1,
-        'lam': 15,
-}
-
-
 params = {}
 params.update(norm_hyperparams)
 # params.update(fisher_hyperparams)
@@ -73,12 +64,13 @@ params.update(system_settings)
 params.update(run_settings)
 params['relevant_params'] = {
         'lr': params['lr'],
-	'ex': params['experiments'][0][:2],
+        'ex': params['experiments'][0][:2],
         'arc': params['arch'],
         'gc': params['grad_clip'],
         'cl': len(params['classes']),
-	'lam': params['lam'],
-    }
+        'lam': params['lam'],
+        'dataset': str(params['dataset'])
+        }
 config_items = params.keys()
 
 config_gen = namedtuple('Config', config_items)
