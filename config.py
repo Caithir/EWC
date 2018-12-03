@@ -17,12 +17,13 @@ run_settings = {
     # 'experiments': ['standard', 'fisher'],
     #'experiments': ['standard'],
     'experiments': ['fisher'],
-    'fisher_base_model': 'MLP3_cl-8.pth',
+    'fisher_base_model': 'resnet18_cl-8.pth',
     'experiment_name': "steps",
     # 'dataset': datasets.MNIST,
     # 'dataset': datasets.EMNIST,
     'dataset': datasets.FashionMNIST,
     'EMNIST_split': 'Digits',
+    'dataset_classes': 10,
 
 }
 
@@ -46,13 +47,13 @@ log_items = [
 norm_hyperparams = {
         'lr': 1e-4,
         'start_epoch': 0,
-        'epochs': 100,
+        'epochs': 40,
         'momentum': .8,
         'weight_decay': 0,
-        'arch': 'MLP',
+        'arch': 'resnet18',
         'batch_size': 16,
         'classes': list(range(8)),
-        'grad_clip': .5,
+        'grad_clip': 1,
         'lam': 0,
 }
 
