@@ -148,20 +148,12 @@ class LossWithFisher(object):
         self.old_task = not self.old_task
 
     def __call__(self, output, target, model=None):
-        # loss_values = [loss(output, target) for loss in self.losses]
         loss_values = [self.losses[0](output, target), self.losses[1](output, model)]
-        #return loss_values
-        #if self.count > 1000:
-        #    return loss_values[1]
-        #else:
-        #    self.count += 1
-        #    return loss_values[0]
         if not self.old_task:
             tag = 'val' if self.valida else ''
             logger.log_loss_componets(loss_values[0], "CE"+tag)
             logger.log_loss_componets(loss_values[1], "FI"+tag)
-        return loss_values
-        #return sum(loss_values)
+        return sum(loss_values)
 
 
 class FisherPenalty(nn.Module):

@@ -57,6 +57,12 @@ norm_hyperparams = {
         'lam': 0,
 }
 
+dataset_names = {
+    datasets.FashionMNIST: 'F',
+    datasets.EMNIST:'E'+run_settings['EMNIST_split'][:1],
+    datasets.MNIST:'M'
+}
+
 
 params = {}
 params.update(norm_hyperparams)
@@ -70,7 +76,7 @@ params['relevant_params'] = {
         'gc': params['grad_clip'],
         'cl': len(params['classes']),
         'lam': params['lam'],
-        'dataset': str(params['dataset'])
+        'dataset': dataset_names[params['dataset']]
         }
 config_items = params.keys()
 
@@ -84,11 +90,11 @@ def restore_config_from_dict(config_old):
     old_conf_gen = namedtuple('Config_old', config_old.keys())
     return old_conf_gen(**config_old)
 
-def swap_config():
-    params = {}
-    params.update(fisher_hyperparams)
-    params.update(system_settings)
-    params.update(run_settings)
-
-    global config
-    config = config_gen(**params)
+# def swap_config():
+#     params = {}
+#     params.update(fisher_hyperparams)
+#     params.update(system_settings)
+#     params.update(run_settings)
+#
+#     global config
+#     config = config_gen(**params)

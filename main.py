@@ -1,4 +1,4 @@
-from config import run_settings, swap_config
+from config import run_settings
 from experiments import standard, fisher
 
 def main():

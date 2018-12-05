@@ -50,7 +50,8 @@ def standard():
                                                batch_size=config.batch_size,
                                                shuffle=True)
 
-    full_val_dataset = datasets.config.dataset(**kwargs)
+    kwargs['train'] = False
+    full_val_dataset = config.dataset(**kwargs)
 
     val_dataset = ClassDataset(config.classes, train=False,
                                ds=full_val_dataset,
