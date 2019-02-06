@@ -47,8 +47,9 @@ def fisher():
 
     train_loader = torch.utils.data.DataLoader(train_dataset,
                                                batch_size=config.batch_size,
-                                               shuffle=True)
+                                               shuffle=True, drop_last=True)
 
+    kwargs['train'] = False
     full_val_dataset = config.dataset(**kwargs)
 
     val_dataset = ClassDataset(transfer_classes, train=False,
@@ -57,7 +58,7 @@ def fisher():
 
     val_loader = torch.utils.data.DataLoader(val_dataset,
                                              batch_size=config.batch_size,
-                                             shuffle=True)
+                                             shuffle=True, drop_last=True)
 
     old_dataset = config.dataset(**kwargs)
 
@@ -67,7 +68,7 @@ def fisher():
 
     old_train_loader = torch.utils.data.DataLoader(old_train_dataset,
                                                    batch_size=config.batch_size,
-                                                   shuffle=True)
+                                                   shuffle=True, drop_last=True)
 
     criterion = LossWithFisher(criterion, model, fisher_diag, star_params, config.lam)
 

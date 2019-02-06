@@ -17,16 +17,12 @@ run_settings = {
     # 'experiments': ['standard', 'fisher'],
     #'experiments': ['standard'],
     'experiments': ['fisher'],
-    'fisher_base_model': 'resnet18_cl-8_dataset-D.pth',
-    #'experiment_name': "steps",
-    #'experiment_name': 'fmnist',
-    #'experiment_name': 'lemnist',
-    'experiment_name': 'dmnist3',
+    'fisher_base_model': 'MLP3_cl-8.pth',
+    'experiment_name': "steps",
     # 'dataset': datasets.MNIST,
-    'dataset': datasets.EMNIST,
-    #'dataset': datasets.FashionMNIST,
-    'EMNIST_split': 'digits',
-    'dataset_classes': 10,
+    # 'dataset': datasets.EMNIST,
+    'dataset': datasets.FashionMNIST,
+    'EMNIST_split': 'Digits',
 
 }
 
@@ -48,22 +44,16 @@ log_items = [
 
 
 norm_hyperparams = {
-        'lr': 1e-3,
+        'lr': 1e-4,
         'start_epoch': 0,
-        'epochs': 40,
+        'epochs': 100,
         'momentum': .8,
         'weight_decay': 0,
-        'arch': 'resnet18',
+        'arch': 'MLP',
         'batch_size': 16,
         'classes': list(range(8)),
-        'grad_clip': 1,
-        'lam': 1000,
-}
-
-dataset_names = {
-    datasets.FashionMNIST: 'F',
-    datasets.EMNIST:'E'+run_settings['EMNIST_split'][:1],
-    datasets.MNIST:'M'
+        'grad_clip': .5,
+        'lam': 0,
 }
 
 
@@ -79,7 +69,7 @@ params['relevant_params'] = {
         'gc': params['grad_clip'],
         'cl': len(params['classes']),
         'lam': params['lam'],
-        'dataset': dataset_names[params['dataset']]
+        'dataset': str(params['dataset'])
         }
 config_items = params.keys()
 
@@ -93,11 +83,11 @@ def restore_config_from_dict(config_old):
     old_conf_gen = namedtuple('Config_old', config_old.keys())
     return old_conf_gen(**config_old)
 
-# def swap_config():
-#     params = {}
-#     params.update(fisher_hyperparams)
-#     params.update(system_settings)
-#     params.update(run_settings)
-#
-#     global config
-#     config = config_gen(**params)
+def swap_config():
+    params = {}
+    params.update(fisher_hyperparams)
+    params.update(system_settings)
+    params.update(run_settings)
+
+    global config
+    config = config_gen(**params)

@@ -29,10 +29,10 @@ def train(train_loaders, model, criterion, optimizer, epoch, scheduled_actions=N
             # compute output
             output = model(input)
             loss_input = [output, target]
-            if config.experiments[0] == 'Fisher':
+            if config.experiments[0] == 'fisher':
                 loss_input.append(model)
             loss = criterion(*loss_input)
-            if config.experiments[0] == 'Fisher':
+            if config.experiments[0] == 'fisher':
                 criterion.swap_task()
 
             # measure accuracy and record loss
@@ -89,7 +89,7 @@ def validate(val_loader, model, criterion):
             output = model(input)
             loss_input = [output, target]
 
-            if config.experiments[0] == 'Fisher':
+            if config.experiments[0] == 'fisher':
                 loss_input.append(model)
             loss = criterion(*loss_input)
             # measure accuracy and record loss
