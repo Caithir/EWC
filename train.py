@@ -4,6 +4,7 @@ from torch.nn.utils import clip_grad_value_
 from config import config
 from Utils import AverageMeter, accuracy
 from Utils.logger import logger
+from Utils import clip_and_track_grad
 
 
 def train(train_loaders, model, criterion, optimizer, epoch, scheduled_actions=None):
@@ -47,7 +48,8 @@ def train(train_loaders, model, criterion, optimizer, epoch, scheduled_actions=N
             # compute gradient and do SGD step
             optimizer.zero_grad()
             loss.backward()
-            clip_grad_value_(model.parameters(), config.grad_clip)
+            clip_and_track_grad(model, config)
+            # clip_grad_value_(model.parameters(), config.grad_clip)
             optimizer.step()
 
 

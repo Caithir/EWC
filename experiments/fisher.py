@@ -20,6 +20,7 @@ def fisher():
     print('starting fisher calc')
     model, fisher_diag, star_params = calc_fisher_utils(filename=config.fisher_base_model)
 
+
     criterion = nn.CrossEntropyLoss().cuda(config.gpu)
     optimizer = torch.optim.SGD(model.parameters(), config.lr,
                                 momentum=config.momentum,

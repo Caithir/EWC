@@ -36,6 +36,7 @@ def calc_fisher_utils(model=None, filename=None):
             star_params = {name: p.clone().detach() for name, p in model.named_parameters()}
             for n, p in fisher_diag.items():
                 fisher_diag[n] = p.detach()
+            logger.log_fisher_diag_as_image(fisher_diag)
             return model, fisher_diag, star_params
 
 
@@ -80,6 +81,7 @@ def calc_fisher_utils(model=None, filename=None):
     model.to(config.gpu)
     for n, p in fisher_diag.items():
         fisher_diag[n] = p.detach()
+    logger.log_fisher_diag_as_image(fisher_diag)
     return model, fisher_diag, star_params
 
 
@@ -127,6 +129,8 @@ def calc_fisher_diag(train_loader, model, criterion, optimizer):
     for name, param in fisher_diag.items():
         for p in param.view(-1):
             logger.log_fisher_diag(p.item())
+
+
     return fisher_diag
 
 
