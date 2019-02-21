@@ -62,8 +62,8 @@ norm_hyperparams = {
 
 dataset_names = {
     datasets.FashionMNIST: 'F',
-    datasets.EMNIST:'E'+run_settings['EMNIST_split'][:1],
-    datasets.MNIST:'M'
+    datasets.EMNIST: 'E'+run_settings['EMNIST_split'][:1],
+    datasets.MNIST: 'M'
 }
 
 
