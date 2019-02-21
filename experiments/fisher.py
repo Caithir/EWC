@@ -8,7 +8,7 @@ import torch.utils.data
 import torch.utils.data.distributed
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
-
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 from Utils.fisherUtils import calc_fisher_utils, LossWithFisher
 from config import config
 from Utils import get_filename_from_config
@@ -26,6 +26,7 @@ def fisher():
                                 momentum=config.momentum,
                                 weight_decay=config.weight_decay)
 
+    lr_sched = ReduceLROnPlateau(optimizer, factor=config.lr_sched_factor)
     data_transforms = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((0.1307,),
@@ -73,6 +74,7 @@ def fisher():
 
     criterion = LossWithFisher(criterion, model, fisher_diag, star_params, config.lam)
 
+
     scheduled_actions = None
     for epoch in range(config.start_epoch, config.epochs):
         criterion.set_train()
@@ -80,7 +82,8 @@ def fisher():
         train((train_loader, old_train_loader), model, criterion, optimizer, epoch, scheduled_actions)
         criterion.set_validation()
         # evaluate on validation set
-        prec1 = validate(val_loader, model, criterion)
+        prec1, val_loss = validate(val_loader, model, criterion)
+        lr_sched.step(val_loss)
 
 
         torch.save({

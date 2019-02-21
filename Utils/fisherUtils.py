@@ -95,7 +95,7 @@ def calc_fisher_diag(train_loader, model, criterion, optimizer):
     model.train()
 
     for m in model.modules():
-        if isinstance(m, nn.BatchNorm2d):
+        if isinstance(m, nn.BatchNorm2d) or isinstance(m, nn.BatchNorm1d):
             m.eval()
 
     end = time.time()

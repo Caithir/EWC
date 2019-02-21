@@ -25,12 +25,16 @@ class singleMLP(nn.Module):
         self.relu = nn.ReLU()
         self.fc2 = nn.Linear(hidden_size, hidden_size)
         self.fc3 = nn.Linear(hidden_size, num_classes)
+        self.bn = nn.BatchNorm1d(hidden_size)
+        self.bn2 = nn.BatchNorm1d(hidden_size)
 
     def forward(self, x):
         x = x.reshape(x.size(0), -1)
         out = self.fc1(x)
+        out = self.bn(out)
         out = self.relu(out)
         out = self.fc2(out)
+        out = self.bn2(out)
         out = self.relu(out)
         out = self.fc3(out)
         return out

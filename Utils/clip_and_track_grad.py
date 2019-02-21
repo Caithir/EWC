@@ -23,5 +23,5 @@ def clip_and_track_grad(model, config):
 def clip_batch_norm_grad_value_(named_params, clip_value):
 
     clip_value = float(clip_value)
-    for name, p in filter(lambda p: p[1].grad is not None or "bn" in p[0], named_params):
+    for name, p in filter(lambda p: p[1].grad is not None and "bn" in p[0], named_params):
         p.grad.data.clamp_(min=-clip_value, max=clip_value)

@@ -49,6 +49,7 @@ norm_hyperparams = {
         'epochs': 100,
         'momentum': .8,
         'weight_decay': 0,
+        'lr_sched_factor': .2,
         'arch': 'MLP',
         'batch_size': 16,
         'classes': list(range(8)),
