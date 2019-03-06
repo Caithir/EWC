@@ -228,7 +228,7 @@ def resnet34(num_classes, pretrained=False, **kwargs):
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
-    model = ResNet(BasicBlock, [3, 4, 6, 3], **kwargs)
+    model = ResNet(BasicBlock, [3, 4, 6, 3], num_classes=num_classes, **kwargs)
     if pretrained:
         model.load_state_dict(model_zoo.load_url(model_urls['resnet34']))
     return model
@@ -274,5 +274,6 @@ def resnet152(pretrained=False, **kwargs):
 
 arches = {
     'resnet18': resnet18,
+    'resnet34': resnet34,
     'MLP': MLP
 }
