@@ -1,3 +1,4 @@
+import torch
 from torch.utils.data.dataset import Dataset
 from PIL import Image
 
@@ -13,12 +14,12 @@ class ClassDataset(Dataset):
         self.train = train
         if self.train:
             class_indices = [ind for ind, target_class in enumerate(ds.train_labels) if target_class in classes]
-            self.data = ds.train_data[class_indices]
-            self.labels = ds.train_labels[class_indices]
+            self.data = torch.tensor(ds.train_data)[class_indices]
+            self.labels = torch.tensor(ds.train_labels)[class_indices]
         else:
             class_indices = [ind for ind, target_class in enumerate(ds.test_labels) if target_class in classes]
-            self.data = ds.test_data[class_indices]
-            self.labels = ds.test_labels[class_indices]
+            self.data = torch.tensor(ds.test_data)[class_indices]
+            self.labels = torch.tensor(ds.test_labels)[class_indices]
 
     def __getitem__(self, index):
         """
@@ -32,7 +33,8 @@ class ClassDataset(Dataset):
 
         # doing this so that it is consistent with all other datasets
         # to return a PIL Image
-        img = Image.fromarray(img.numpy(), mode='L')
+        channel_type = "L" if len(img.shape) == 2 else "RGB"
+        img = Image.fromarray(img.numpy(), mode=channel_type)
 
         if self.transform is not None:
             img = self.transform(img)

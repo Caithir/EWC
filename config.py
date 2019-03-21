@@ -3,9 +3,9 @@ import torch
 import torchvision.datasets as datasets
 from collections import namedtuple
 # 'D:', 'OneDrive - Duke University', 'research', 'EWC'
-#BASE_LOG_DIR = ['logs']
-#BASE_DATA_DIR = ['data']
-#BASE_MODEL_DIR = ['models']
+# BASE_LOG_DIR = ['logs']
+# BASE_DATA_DIR = ['data']
+# BASE_MODEL_DIR = ['models']
 
 BASE_MODEL_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'models']
 BASE_LOG_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'logs']
@@ -22,10 +22,11 @@ run_settings = {
     #'experiment_name': 'fmnist',
     #'experiment_name': 'lemnist',
     'experiment_name': 'newModels',
-    'dataset': datasets.MNIST,
+    # 'dataset': datasets.MNIST,
+    'dataset': datasets.CIFAR10,
     # 'dataset': datasets.EMNIST,
     #'dataset': datasets.FashionMNIST,
-    # 'EMNIST_split': 'digits',
+    'EMNIST_split': 'digits',
     'dataset_classes': 10,
 
 }
@@ -53,7 +54,7 @@ norm_hyperparams = {
         'epochs': 40,
         'momentum': .8,
         'weight_decay': 0,
-        'arch': 'vgg',
+        'arch': 'AlexNet',
         'batch_size': 16,
         'classes': list(range(8)),
         'grad_clip': 1000,
@@ -62,8 +63,9 @@ norm_hyperparams = {
 
 dataset_names = {
     datasets.FashionMNIST: 'F',
-    datasets.EMNIST:'E'+run_settings['EMNIST_split'][:1],
-    datasets.MNIST:'M'
+    datasets.EMNIST: 'E'+run_settings['EMNIST_split'][:1],
+    datasets.MNIST: 'M',
+    datasets.CIFAR10: "C"
 }
 
 
@@ -93,11 +95,5 @@ def restore_config_from_dict(config_old):
     old_conf_gen = namedtuple('Config_old', config_old.keys())
     return old_conf_gen(**config_old)
 
-# def swap_config():
-#     params = {}
-#     params.update(fisher_hyperparams)
-#     params.update(system_settings)
-#     params.update(run_settings)
-#
-#     global config
-#     config = config_gen(**params)
+
+

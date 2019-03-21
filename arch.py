@@ -237,13 +237,16 @@ def resnet152(pretrained=False, **kwargs):
         model.load_state_dict(model_zoo.load_url(model_urls['resnet152']))
     return model
 
+
 class VGG(nn.Module):
 
     def __init__(self, features, num_classes=1000, init_weights=True):
         super(VGG, self).__init__()
         self.features = features
         self.classifier = nn.Sequential(
-            nn.Linear(512 * 7 * 7, 4096),
+            # nn.Linear(512 * 7 * 7, 4096),
+            # Working with smaller dimension data
+            nn.Linear(512, 4096),
             nn.ReLU(True),
             nn.Dropout(),
             nn.Linear(4096, 4096),
@@ -344,11 +347,13 @@ class AlexNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.Conv2d(256, 256, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
-            nn.MaxPool2d(kernel_size=3, stride=2),
+            # makes the sizes work out
+            # nn.MaxPool2d(kernel_size=3, stride=2),
         )
         self.classifier = nn.Sequential(
             nn.Dropout(),
-            nn.Linear(256 * 6 * 6, 4096),
+            # nn.Linear(256 * 6 * 6, 4096),
+            nn.Linear(256, 4096),
             nn.ReLU(inplace=True),
             nn.Dropout(),
             nn.Linear(4096, 4096),
@@ -358,7 +363,7 @@ class AlexNet(nn.Module):
 
     def forward(self, x):
         x = self.features(x)
-        x = x.view(x.size(0), 256 * 6 * 6)
+        x = x.view(x.size(0), -1)
         x = self.classifier(x)
         return x
 
