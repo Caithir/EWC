@@ -5,7 +5,7 @@ from arch import arches
 
 
 def get_model_from_config(config):
-    return arches[config.arch](config.dataset_classes)
+    return arches[config.arch](num_classes=config.dataset_classes)
 
 
 def get_filename_from_config(config, fisher=None, standard=None):

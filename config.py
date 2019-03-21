@@ -15,17 +15,17 @@ run_settings = {
     'print_freq': 20,
     # options are standard: no fisher stuff, fisher: only fisher stuff
     # 'experiments': ['standard', 'fisher'],
-    #'experiments': ['standard'],
-    'experiments': ['fisher'],
-    'fisher_base_model': 'resnet18_cl-8_dataset-D.pth',
+    'experiments': ['standard'],
+    # 'experiments': ['fisher'],
+    # 'fisher_base_model': 'resnet18_cl-8_dataset-D.pth',
     #'experiment_name': "steps",
     #'experiment_name': 'fmnist',
     #'experiment_name': 'lemnist',
-    'experiment_name': 'dmnist3',
-    # 'dataset': datasets.MNIST,
-    'dataset': datasets.EMNIST,
+    'experiment_name': 'newModels',
+    'dataset': datasets.MNIST,
+    # 'dataset': datasets.EMNIST,
     #'dataset': datasets.FashionMNIST,
-    'EMNIST_split': 'digits',
+    # 'EMNIST_split': 'digits',
     'dataset_classes': 10,
 
 }
@@ -53,10 +53,10 @@ norm_hyperparams = {
         'epochs': 40,
         'momentum': .8,
         'weight_decay': 0,
-        'arch': 'resnet18',
+        'arch': 'vgg',
         'batch_size': 16,
         'classes': list(range(8)),
-        'grad_clip': 1,
+        'grad_clip': 1000,
         'lam': 1000,
 }
 
