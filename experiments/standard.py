@@ -8,6 +8,7 @@ import torch.utils.data
 import torch.utils.data.distributed
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 from config import config
 from Utils import get_model_from_config, get_filename_from_config
 from Utils.dataset import ClassDataset
@@ -23,6 +24,7 @@ def standard():
     optimizer = torch.optim.SGD(model.parameters(), config.lr,
                                 momentum=config.momentum,
                                 weight_decay=config.weight_decay)
+    sched = ReduceLROnPlateau(optimizer, factor=.2)
 
     # Standard set of data transformations for
     # use in all dataloaders
@@ -65,9 +67,10 @@ def standard():
 
         train((train_loader,), model, criterion, optimizer, epoch)
 
+
         # evaluate on validation set
         prec1 = validate(val_loader, model, criterion)
-
+        sched.step(prec1, epoch)
         torch.save({
             'epoch': epoch + 1,
             "config": config._asdict(),
