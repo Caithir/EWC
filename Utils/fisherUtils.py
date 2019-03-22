@@ -54,14 +54,21 @@ def calc_fisher_utils(model=None, filename=None):
     optimizer = torch.optim.SGD(model.parameters(), 0)
 
     data_transforms = transforms.Compose([
-                                        transforms.ToTensor(),
-                                        transforms.Normalize((0.1307,),
-                                                             (0.3081,))
-                                   ])
+        transforms.ToTensor(),
+        transforms.Normalize((0.1307,),
+                             (0.3081,))
+    ])
 
-    full_train_dataset = datasets.MNIST(config.data, train=True,
-                                        download=True,
-                                        transform=data_transforms)
+    kwargs = {
+        'root': config.data,
+        'train': True,
+        'download': True,
+        'transform': data_transforms
+    }
+    if config.dataset == datasets.EMNIST:
+        kwargs['split'] = config.EMNIST_split
+
+    full_train_dataset = config.dataset(**kwargs)
 
     train_dataset = ClassDataset(config.classes, ds=full_train_dataset,
                                  transform=data_transforms)
