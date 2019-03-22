@@ -133,9 +133,9 @@ def calc_fisher_diag(train_loader, model, criterion, optimizer):
             #     print('Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'.format(
             #            batch_time=batch_time
             #     ))
-    for name, param in fisher_diag.items():
-        for p in param.view(-1):
-            logger.log_fisher_diag(p.item())
+    # for name, param in fisher_diag.items():
+    #     for p in param.view(-1):
+    #         logger.log_fisher_diag(p.item())
 
 
     return fisher_diag
