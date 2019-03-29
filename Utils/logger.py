@@ -115,5 +115,35 @@ class Logger(object):
         tag = str(os.path.join(self.tag_prefix, 'grad_graph', str(iter_)))
         self.writer.add_figure(tag, fig, global_step=iter_)
 
+    def log_embedding(self, emb, metadata, label_img, global_step=None):
+            self.writer.add_embedding(emb.cpu().data,
+                                      metadata=metadata.data,
+                                      label_img=label_img,
+                                      global_step=global_step)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 logger = Logger()
