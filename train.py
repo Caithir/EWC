@@ -1,10 +1,8 @@
 import time
 import torch
-from torch.nn.utils import clip_grad_value_
-from config import config
+from configs.config import config
 from Utils import AverageMeter, accuracy
 from Utils.logger import logger
-from Utils import clip_and_track_grad
 
 
 def train(train_loaders, model, criterion, optimizer, epoch, scheduled_actions=None):
@@ -20,6 +18,7 @@ def train(train_loaders, model, criterion, optimizer, epoch, scheduled_actions=N
     end = time.time()
     for i, batches in enumerate(zip(*train_loaders)):
         for b_id, (input, target) in enumerate(batches):
+            if i ==1: logger.log_image(input[0])
             # measure data loading time
             data_time.update(time.time() - end)
 

@@ -14,7 +14,7 @@ from Utils.dataset import ClassDataset
 from train import train, validate
 
 
-def standard():
+def kaggle():
     model = get_model_from_config(config)
     model.to(config.gpu)
 
@@ -24,24 +24,14 @@ def standard():
                                 momentum=config.momentum,
                                 weight_decay=config.weight_decay)
 
-    # Standard set of data transformations for
-    # use in all dataloaders
     data_transforms = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize((0.1307,),
-                             (0.3081,))
+        # transforms.ToTensor(),
+        # pre computed mean and std
+        # transforms.Normalize((0.286030,),
+        #                      (0.3529011,))
     ])
 
-    kwargs = {
-        'root': config.data,
-        'train': True,
-        'download': True,
-        'transform': data_transforms
-    }
-    if config.dataset == datasets.EMNIST:
-        kwargs['split'] = config.EMNIST_split
-
-    full_train_dataset = config.dataset(**kwargs)
+    full_train_dataset = config.dataset(config.test_split)
 
     train_dataset = ClassDataset(config.classes, ds=full_train_dataset,
                                  transform=data_transforms)
@@ -50,8 +40,7 @@ def standard():
                                                batch_size=config.batch_size,
                                                shuffle=True)
 
-    kwargs['train'] = False
-    full_val_dataset = config.dataset(**kwargs)
+    full_val_dataset = config.dataset(config.test_split)
 
     val_dataset = ClassDataset(config.classes, train=False,
                                ds=full_val_dataset,
@@ -75,7 +64,7 @@ def standard():
             'optimizer': optimizer.state_dict(),
         }, os.path.join(config.models, 'checkpoint', get_filename_from_config(config)))
 
-    print(f"saving completed to: {os.path.join(config.models, 'completed', get_filename_from_config(config, standard=True))}")
+    print(f"saving completed to: {os.path.join(config.models, 'kaggle', get_filename_from_config(config))}")
     torch.save({
         "config": config._asdict(),
         'state_dict': model.state_dict(),

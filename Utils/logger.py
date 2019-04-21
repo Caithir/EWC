@@ -3,7 +3,7 @@ import os
 from collections import Counter
 import torch
 from tensorboardX import SummaryWriter
-from config import config, log_items
+from configs.config import config, log_items
 from Utils import get_filename_from_config
 import matplotlib.pyplot as plt
 from math import ceil, sqrt
@@ -16,6 +16,10 @@ class Logger(object):
                                                  get_filename_from_config(config)[:-4]))
         self.log_counters = Counter()
         self.tag_prefix = os.path.join("")
+
+    def log_image(self, image):
+        self.writer.add_image('test_img', image)
+
 
     def log(self, tag, value):
         if type not in log_items:

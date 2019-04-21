@@ -1,6 +1,5 @@
 import time
 import os
-from functools import reduce
 
 import torch
 import torch.nn as nn
@@ -8,14 +7,13 @@ import torch.nn.parallel
 import torch.optim
 import torch.utils.data
 import torch.utils.data.distributed
-from torch.autograd import Variable as V
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 from tqdm import tqdm
 
 from Utils.dataset import ClassDataset
-from .utils import get_model_from_config, get_filename_from_config, AverageMeter
-from config import config, restore_config_from_dict
+from .utils import get_model_from_config, AverageMeter
+from configs.config import config, restore_config_from_dict
 from .logger import logger
 
 def calc_fisher_utils(model=None, filename=None):

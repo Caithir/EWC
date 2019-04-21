@@ -2,7 +2,7 @@ from torch.nn.utils.convert_parameters import parameters_to_vector
 
 import torch
 from Utils import get_model_from_config
-from config import restore_config_from_dict
+from configs.config import restore_config_from_dict
 import matplotlib.pyplot as plt
 
 

@@ -1,32 +1,27 @@
 import os
 import torch
 import torchvision.datasets as datasets
+from kaggleData.kaggleDataset import KaggleData
 from collections import namedtuple
 # 'D:', 'OneDrive - Duke University', 'research', 'EWC'
-#BASE_LOG_DIR = ['logs']
-#BASE_DATA_DIR = ['data']
-#BASE_MODEL_DIR = ['models']
+# BASE_LOG_DIR = ['logs']
+# BASE_DATA_DIR = ['data']
+# BASE_MODEL_DIR = ['models']
 
 BASE_MODEL_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'models']
 BASE_LOG_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'logs']
 BASE_DATA_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'data']
 
 run_settings = {
-    'print_freq': 20,
-    # options are standard: no fisher stuff, fisher: only fisher stuff
-    # 'experiments': ['standard', 'fisher'],
-    'experiments': ['standard'],
-    # 'experiments': ['fisher'],
+    'print_freq': 40,
+    # 'experiments': ['standard'],
+    'experiments': ['kaggle'],
     'fisher_base_model': 'MLP_cl-8.pth',
-    #'experiment_name': "steps",
-    'experiment_name': 'fmnist',
-    #'experiment_name': 'lemnist',
-    # 'experiment_name': 'BMLP_bn',
-    # 'dataset': datasets.MNIST,
-    # 'dataset': datasets.EMNIST,
-    'dataset': datasets.FashionMNIST,
+    'experiment_name': 'small_data4',
+    'dataset': KaggleData,
     'EMNIST_split': 'digits',
     'dataset_classes': 10,
+    'test_split': .2,
 
 }
 
@@ -64,7 +59,8 @@ norm_hyperparams = {
 dataset_names = {
     datasets.FashionMNIST: 'F',
     datasets.EMNIST: 'E'+run_settings['EMNIST_split'][:1],
-    datasets.MNIST: 'M'
+    datasets.MNIST: 'M',
+    KaggleData: 'kag'
 }
 
 
