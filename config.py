@@ -15,13 +15,13 @@ run_settings = {
     'print_freq': 20,
     # options are standard: no fisher stuff, fisher: only fisher stuff
     # 'experiments': ['standard', 'fisher'],
-    'experiments': ['standard'],
-    # 'experiments': ['fisher'],
-    # 'fisher_base_model': 'resnet18_cl-8_dataset-D.pth',
+    #'experiments': ['standard'],
+    'experiments': ['fisher'],
+    'fisher_base_model': 'vgg_cl-8.pth',
     #'experiment_name': "steps",
     #'experiment_name': 'fmnist',
     #'experiment_name': 'lemnist',
-    'experiment_name': 'newModels',
+    'experiment_name': 'vgg_fish',
     # 'dataset': datasets.MNIST,
     'dataset': datasets.CIFAR10,
     # 'dataset': datasets.EMNIST,
@@ -54,11 +54,11 @@ norm_hyperparams = {
         'epochs': 40,
         'momentum': .8,
         'weight_decay': 0,
-        'arch': 'AlexNet',
+        'arch': 'vgg',
         'batch_size': 16,
         'classes': list(range(8)),
-        'grad_clip': 1000,
-        'lam': 1000,
+        'grad_clip': 1,
+        'lam': 10000,
 }
 
 dataset_names = {
