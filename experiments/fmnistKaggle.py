@@ -25,9 +25,15 @@ def kaggle():
                                 weight_decay=config.weight_decay)
 
     data_transforms = transforms.Compose([
-        # transforms.ToTensor(),
-        # pre computed mean and std
         lambda x: x.unsqueeze(0),
+        transforms.ToPILImage(),
+        transforms.RandomVerticalFlip(),
+        transforms.RandomHorizontalFlip(),
+        # transforms.RandomRotation(),
+        transforms.RandomAffine(30),
+        transforms.ToTensor(),
+        # pre computed mean and std
+
         transforms.Normalize((0.286030,),
                              (0.3529011,))
     ])
