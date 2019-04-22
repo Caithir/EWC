@@ -27,8 +27,9 @@ def kaggle():
     data_transforms = transforms.Compose([
         # transforms.ToTensor(),
         # pre computed mean and std
-        # transforms.Normalize((0.286030,),
-        #                      (0.3529011,))
+        lambda x: x.unsqueeze(0),
+        transforms.Normalize((0.286030,),
+                             (0.3529011,))
     ])
 
     full_train_dataset = config.dataset(config.test_split)
