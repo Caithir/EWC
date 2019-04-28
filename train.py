@@ -21,6 +21,7 @@ def train(train_loaders, model, criterion, optimizer, epoch, scheduled_actions=N
     for i, batches in enumerate(zip(*train_loaders)):
         for b_id, (input, target) in enumerate(batches):
             # measure data loading time
+            n_iter = (epoch * len(batches)) + i
             data_time.update(time.time() - end)
 
             if config.gpu is not None:
@@ -58,6 +59,8 @@ def train(train_loaders, model, criterion, optimizer, epoch, scheduled_actions=N
             batch_time.update(time.time() - end)
             end = time.time()
             logger.train_batch_log(model, top1.avg, losses.avg)
+            if i % 5 ==0:
+                logger.log_embedding(output, target, input, global_step=n_iter)
             if i % config.print_freq == 0:
                 print('Epoch: [{0}][{1}/{2}]\t'
                       'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
