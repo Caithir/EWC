@@ -30,7 +30,7 @@ def standard():
     # use in all dataloaders
     data_transforms = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Normalize(config.standardize_params)
+        transforms.Normalize(*config.standardize_params)
     ])
 
     kwargs = {

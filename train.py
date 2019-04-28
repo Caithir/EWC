@@ -58,7 +58,7 @@ def train(train_loaders, model, criterion, optimizer, epoch, scheduled_actions=N
             batch_time.update(time.time() - end)
             end = time.time()
             logger.train_batch_log(model, top1.avg, losses.avg)
-            if i % 5 ==0:
+            if i % 200 == 0 and b_id == 1:
                 logger.log_embedding(output, target, input, global_step=n_iter)
             if i % config.print_freq == 0:
                 print('Epoch: [{0}][{1}/{2}]\t'
