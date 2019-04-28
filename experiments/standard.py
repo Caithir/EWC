@@ -9,7 +9,7 @@ import torch.utils.data.distributed
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 from torch.optim.lr_scheduler import ReduceLROnPlateau
-from config import config
+from configs.config import config
 from Utils import get_model_from_config, get_filename_from_config
 from Utils.dataset import ClassDataset
 from train import train, validate
@@ -30,8 +30,7 @@ def standard():
     # use in all dataloaders
     data_transforms = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Normalize((0.1307,),
-                             (0.3081,))
+        transforms.Normalize(config.standardize_params)
     ])
 
     kwargs = {
@@ -66,8 +65,6 @@ def standard():
     for epoch in range(config.start_epoch, config.epochs):
 
         train((train_loader,), model, criterion, optimizer, epoch)
-
-
         # evaluate on validation set
         prec1 = validate(val_loader, model, criterion)
         sched.step(prec1, epoch)

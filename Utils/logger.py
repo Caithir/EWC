@@ -3,7 +3,7 @@ import os
 from collections import Counter
 import torch
 from tensorboardX import SummaryWriter
-from config import config, log_items
+from configs.config import config, log_items
 from Utils import get_filename_from_config
 import matplotlib.pyplot as plt
 from math import ceil, sqrt

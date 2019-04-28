@@ -1,7 +1,6 @@
 import time
 import torch
-from torch.nn.utils import clip_grad_value_
-from config import config
+from configs.config import config
 from Utils import AverageMeter, accuracy
 from Utils.logger import logger
 from Utils import clip_and_track_grad

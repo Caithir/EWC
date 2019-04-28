@@ -10,7 +10,7 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
 from Utils.fisherUtils import calc_fisher_utils, LossWithFisher
-from config import config
+from configs.config import config
 from Utils import get_filename_from_config
 from Utils.dataset import ClassDataset
 from train import train, validate
