@@ -26,11 +26,7 @@ def fisher():
                                 momentum=config.momentum,
                                 weight_decay=config.weight_decay)
 
-    data_transforms = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize((0.1307,),
-                             (0.3081,))
-    ])
+    data_transforms = transforms.Compose(config.experiment_transforms)
     kwargs = {
         'root': config.data,
         'train': True,
