@@ -66,6 +66,9 @@ dataset_names = {
     datasets.CIFAR10: "C"
 }
 
+def add_2_channels(x):
+    return torch.stack([x[0], torch.zeros(x.shape[1:]), torch.zeros(x.shape[1:])])
+
 dataset_transforms = {
     datasets.MNIST: [
         # pad to 32x32
@@ -73,7 +76,7 @@ dataset_transforms = {
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,)),
         # add 2 more channels
-        transforms.Lambda(lambda x: torch.stack([x[0], torch.zeros(x.shape[1:]), torch.zeros(x.shape[1:])])),
+        transforms.Lambda(add_2_channels),
     ],
 
     datasets.FashionMNIST: [
@@ -82,7 +85,7 @@ dataset_transforms = {
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,)),
         # add 2 more channels
-        transforms.Lambda(lambda x: torch.stack([x[0], torch.zeros(x.shape[1:]), torch.zeros(x.shape[1:])])),
+        transforms.Lambda(add_2_channels),
     ],
     datasets.CIFAR10: [
         transforms.ToTensor(),
