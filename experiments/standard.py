@@ -28,10 +28,7 @@ def standard():
 
     # Standard set of data transformations for
     # use in all dataloaders
-    data_transforms = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize(*config.standardize_params)
-    ])
+    data_transforms = transforms.Compose(config.experiment_transforms)
 
     kwargs = {
         'root': config.data,

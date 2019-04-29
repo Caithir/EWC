@@ -2,6 +2,7 @@ import os
 import torch
 import torchvision.datasets as datasets
 from collections import namedtuple
+from torchvision import transforms
 # 'D:', 'OneDrive - Duke University', 'research', 'EWC'
 # BASE_LOG_DIR = ['logs']
 # BASE_DATA_DIR = ['data']
@@ -65,10 +66,28 @@ dataset_names = {
     datasets.CIFAR10: "C"
 }
 
-dataset_standardize_params = {
-    datasets.MNIST: [(0.1307,), (0.3081,)],
-    datasets.FashionMNIST: [],
-    datasets.CIFAR10: [],
+dataset_transforms = {
+    datasets.MNIST: [
+        # pad to 32x32
+        transforms.Pad(2),
+        transforms.ToTensor(),
+        transforms.Normalize((0.1307,), (0.3081,)),
+        # add 2 more channels
+        transforms.Lambda(lambda x: torch.stack([x[0], torch.zeros(x.shape[1:]), torch.zeros(x.shape[1:])])),
+    ],
+
+    datasets.FashionMNIST: [
+        # pad to 32x32
+        transforms.Pad(2),
+        transforms.ToTensor(),
+        transforms.Normalize((0.1307,), (0.3081,)),
+        # add 2 more channels
+        transforms.Lambda(lambda x: torch.stack([x[0], torch.zeros(x.shape[1:]), torch.zeros(x.shape[1:])])),
+    ],
+    datasets.CIFAR10: [
+        transforms.ToTensor(),
+        transforms.Normalize((0.4057, 0.5111, 0.5245), (0.2038, 0.2372, 0.3238)),
+    ],
 }
 
 
@@ -78,7 +97,7 @@ params.update(norm_hyperparams)
 # params.update(fisher_hyperparams)
 params.update(system_settings)
 params.update(run_settings)
-params['standardize_params'] = dataset_standardize_params[run_settings['dataset']]
+params['experiment_transforms'] = dataset_transforms[run_settings['dataset']]
 params['relevant_params'] = {
         'lr': params['lr'],
         'ex': params['experiments'][0][:2],
