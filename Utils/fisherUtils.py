@@ -26,7 +26,7 @@ def calc_fisher_utils(model=None, filename=None):
         potential_path = os.path.join(config.models, 'completed', config.fisher_base_model[:-4] + '_FI.pth')
         if os.path.isfile(potential_path):
             print("Fisher stats found for the model")
-            checkpoint = torch.load(potential_path)
+            checkpoint = torch.load(potential_path, map_location=config.gpu)
             model = get_model_from_config(restore_config_from_dict(checkpoint['config']))
             model.load_state_dict(checkpoint['state_dict'])
             model.to(config.gpu)
@@ -38,7 +38,7 @@ def calc_fisher_utils(model=None, filename=None):
             return model, fisher_diag, star_params
 
 
-        checkpoint = torch.load(os.path.join(config.models, 'completed', filename))
+        checkpoint = torch.load(os.path.join(config.models, 'completed', filename), map_location=config.gpu)
 
         config_from_file = restore_config_from_dict(checkpoint["config"])
         model = get_model_from_config(config_from_file)
@@ -51,7 +51,7 @@ def calc_fisher_utils(model=None, filename=None):
     # not making any steps, using to clear gradients
     optimizer = torch.optim.SGD(model.parameters(), 0)
     data_transforms = transforms.Compose(config.experiment_transforms)
-    
+
     kwargs = {
         'root': config.data,
         'train': True,
