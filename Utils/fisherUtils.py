@@ -51,7 +51,7 @@ def calc_fisher_utils(model=None, filename=None):
     # not making any steps, using to clear gradients
     optimizer = torch.optim.SGD(model.parameters(), 0)
     data_transforms = transforms.Compose(config.experiment_transforms)
-    
+
     kwargs = {
         'root': config.data,
         'train': True,
