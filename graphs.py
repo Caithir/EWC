@@ -4,11 +4,12 @@ import torch
 from Utils import get_model_from_config
 from configs.config import restore_config_from_dict
 import matplotlib.pyplot as plt
+from configs.config import config
 
 
 def fisher_graph(filename):
 
-    checkpoint = torch.load(filename)
+    checkpoint = torch.load(filename, map_location=config.gpu)
     fisher_diag = checkpoint['FI']
     config = restore_config_from_dict(checkpoint['confid'])
     model = get_model_from_config(config)
