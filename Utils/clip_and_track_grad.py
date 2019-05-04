@@ -1,6 +1,6 @@
 import torch
 
-from torch.nn.utils import clip_grad_value_
+from torch.nn.utils import clip_grad_value_, clip_grad_norm_
 from .logger import logger
 
 
@@ -8,7 +8,8 @@ def clip_and_track_grad(model, config):
     epsilon = pow(1/10, 3)
     clipped_params = {name: p.grad.data.clone().detach()
                       for name, p in model.named_parameters()}
-    clip_grad_value_(model.parameters(), config.grad_clip)
+    # clip_grad_value_(model.parameters(), config.grad_clip)
+    clip_grad_norm_(model.parameters(), 10)
     # clip_batch_norm_grad_value_(model.named_parameters(), config.grad_clip)
     for name, param in model.named_parameters():
         clipped_params[name] -= param.grad.data

@@ -4,26 +4,26 @@ import torchvision.datasets as datasets
 from collections import namedtuple
 from torchvision import transforms
 # 'D:', 'OneDrive - Duke University', 'research', 'EWC'
-# BASE_LOG_DIR = ['logs']
-# BASE_DATA_DIR = ['data']
-# BASE_MODEL_DIR = ['models']
+BASE_LOG_DIR = ['logs']
+BASE_DATA_DIR = ['data']
+BASE_MODEL_DIR = ['models']
 
-BASE_MODEL_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'models']
-BASE_LOG_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'logs']
-BASE_DATA_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'data']
+# BASE_MODEL_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'models']
+# BASE_LOG_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'logs']
+# BASE_DATA_DIR = ['/usr', 'project', 'xtmp', 'EWC', 'EWC', 'data']
 
 run_settings = {
     'print_freq': 20,
     # options are standard: no fisher stuff, fisher: only fisher stuff
     # 'experiments': ['standard', 'fisher'],
-    'experiments': ['standard'],
-    # 'experiments': ['fisher'],
+    # 'experiments': ['standard'],
+    'experiments': ['fisher'],
     'fisher_base_model': 'resnet18_cl-8.pth',
-    #'experiment_name': 'fmnist',
-    'experiment_name': '8-classic',
+    'experiment_name': 'scaling',
+    # 'experiment_name': 'embed6',
     'dataset': datasets.MNIST,
     #'dataset': datasets.CIFAR10,
-    #'dataset': datasets.FashionMNIST,
+    # 'dataset': datasets.FashionMNIST,
     'EMNIST_split': 'digits',
     'dataset_classes': 10,
 
@@ -49,10 +49,10 @@ log_items = [
 norm_hyperparams = {
         'lr': 1e-3,
         'start_epoch': 0,
-        'epochs': 40,
-        'momentum': .8,
+        'epochs': 20,
+        'momentum': .9,
         'weight_decay': 0,
-        'arch': 'resnet18',
+        'arch': 'vgg_bn',
         'batch_size': 16,
         'classes': list(range(8)),
         'grad_clip': 1,
@@ -72,11 +72,11 @@ def add_2_channels(x):
 dataset_transforms = {
     datasets.MNIST: [
         # pad to 32x32
-        transforms.Pad(2),
+        # transforms.Pad(2),
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,)),
         # add 2 more channels
-        transforms.Lambda(add_2_channels),
+        # transforms.Lambda(add_2_channels),
     ],
 
     datasets.FashionMNIST: [

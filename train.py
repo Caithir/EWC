@@ -1,5 +1,7 @@
 import time
 import torch
+
+from Utils.embedding import make_full_embedding
 from configs.config import config
 from Utils import AverageMeter, accuracy
 from Utils.logger import logger
@@ -40,6 +42,9 @@ def train(train_loaders, model, criterion, optimizer, epoch, scheduled_actions=N
             prec1, prec5 = accuracy(output, target, topk=(1, 5))
             if b_id == 1:
                 logger.val_batch_log(prec1, loss, fisher=True)
+                if i % 10 == 0 and i < 30:
+                    pass
+                    # make_full_embedding(model, n_iter)
                 continue
             losses.update(loss.item(), input.size(0))
             top1.update(prec1[0], input.size(0))
@@ -58,8 +63,7 @@ def train(train_loaders, model, criterion, optimizer, epoch, scheduled_actions=N
             batch_time.update(time.time() - end)
             end = time.time()
             logger.train_batch_log(model, top1.avg, losses.avg)
-            if i % 200 == 0 and b_id == 1:
-                logger.log_embedding(output, target, input, global_step=n_iter)
+
             if i % config.print_freq == 0:
                 print('Epoch: [{0}][{1}/{2}]\t'
                       'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
