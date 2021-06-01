@@ -27,5 +27,5 @@ torch==0.4.1
 torchvision==0.2.1
 tqdm==4.26.0
 Unidecode==1.0.22
-urllib3==1.22
+urllib3==1.26.5
 Werkzeug==0.14.1
