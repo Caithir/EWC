@@ -7,7 +7,7 @@ kaggle==1.4.7.1
 kiwisolver==1.0.1
 Markdown==3.0.1
 matplotlib==3.0.0
-numpy==1.15.2
+numpy==1.22.0
 pandas==0.23.4
 Pillow==5.2.0
 protobuf==3.6.1
